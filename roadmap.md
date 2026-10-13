@@ -1,6 +1,6 @@
 # DocuMind AI roadmap
 - [x] Phase 1: App shell, sidebar, Dashboard/Documents/Chat/Search/Evaluation/Settings views
-- [ ] Phase 2: Lovable Cloud + authentication
+- [ ] Phase 2: Lovable Cloud + authentication (in progress)
 - [ ] Phase 3: Schema, migrations, RLS (pgvector)
 - [ ] Phase 4: Upload + private storage
 - [ ] Phase 5: Extraction, chunking, embeddings
@@ -9,3 +9,4 @@
 - [ ] Phase 8: Chat history + document management
 - [ ] Phase 9: Tests + evaluation
 - [ ] Phase 10: Deployment + README
+- [ ] (user ask) Secure uploads + server-side extraction + chunk storage — phases 4–5
