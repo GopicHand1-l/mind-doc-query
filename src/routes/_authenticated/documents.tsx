@@ -9,7 +9,7 @@ import { PageHeader, EmptyState } from "@/components/page-shell";
 import { PIPELINE_CONFIG } from "@/lib/pipeline-config";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/documents")({
+export const Route = createFileRoute("/_authenticated/documents")({
   head: () => ({
     meta: [
       { title: "Documents — DocuMind AI" },

@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader, Unavailable } from "@/components/page-shell";
 import { PIPELINE_CONFIG } from "@/lib/pipeline-config";
 
-export const Route = createFileRoute("/settings")({
+export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
     meta: [
       { title: "Settings — DocuMind AI" },

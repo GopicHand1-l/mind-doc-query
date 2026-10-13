@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PageHeader, EmptyState, Unavailable } from "@/components/page-shell";
 
-export const Route = createFileRoute("/evaluation")({
+export const Route = createFileRoute("/_authenticated/evaluation")({
   head: () => ({
     meta: [
       { title: "Evaluation — DocuMind AI" },
