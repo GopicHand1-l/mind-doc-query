@@ -26,7 +26,7 @@ export const createDocument = createServerFn({ method: "POST" })
   });
 
 async function sha256Hex(bytes: Uint8Array) {
-  const h = await crypto.subtle.digest("SHA-256", bytes);
+  const h = await crypto.subtle.digest("SHA-256", bytes as Uint8Array<ArrayBuffer>);
   return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
@@ -89,7 +89,7 @@ export const processDocument = createServerFn({ method: "POST" })
           content: c.content,
           page_number: c.page,
           metadata: c.metadata,
-          embedding: toPgVector(vectors[i + j]),
+          embedding: toPgVector(vectors[i + j]!),
         }));
         const { error } = await supabaseAdmin.from("document_chunks").insert(rows);
         if (error) return await fail(`Failed to store chunks: ${error.message}`);

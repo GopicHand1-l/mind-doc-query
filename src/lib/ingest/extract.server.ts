@@ -26,7 +26,7 @@ export function extractDocx(bytes: Uint8Array): Segment[] {
   let n = 0;
   for (const p of paragraphs) {
     const withBreaks = p.replace(/<w:(tab|br)\b[^>]*\/>/g, " ");
-    const texts = [...withBreaks.matchAll(/<w:t(?:\s[^>]*)?>([\s\S]*?)<\/w:t>/g)].map((m) => decodeXml(m[1]));
+    const texts = [...withBreaks.matchAll(/<w:t(?:\s[^>]*)?>([\s\S]*?)<\/w:t>/g)].map((m) => decodeXml(m[1] ?? ""));
     const text = texts.join("").trim();
     if (text) out.push({ text, page: null, paragraph: ++n });
   }

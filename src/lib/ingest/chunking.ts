@@ -53,8 +53,8 @@ export function chunkSegments(
         content: slice.map((x) => x.w).join(" "),
         page,
         metadata: {
-          paragraph_start: slice[0].p,
-          paragraph_end: slice[slice.length - 1].p,
+          paragraph_start: slice[0]!.p,
+          paragraph_end: slice[slice.length - 1]!.p,
           approx_tokens: Math.round(slice.length * TOKENS_PER_WORD),
         },
       });
