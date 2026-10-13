@@ -14,16 +14,213 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      conversations: {
+        Row: {
+          created_at: string
+          document_ids: string[] | null
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          document_ids?: string[] | null
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          document_ids?: string[] | null
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      document_chunks: {
+        Row: {
+          chunk_index: number
+          content: string
+          created_at: string
+          document_id: string
+          embedding: string
+          id: string
+          metadata: Json
+          page_number: number | null
+          user_id: string
+        }
+        Insert: {
+          chunk_index: number
+          content: string
+          created_at?: string
+          document_id: string
+          embedding: string
+          id?: string
+          metadata?: Json
+          page_number?: number | null
+          user_id: string
+        }
+        Update: {
+          chunk_index?: number
+          content?: string
+          created_at?: string
+          document_id?: string
+          embedding?: string
+          id?: string
+          metadata?: Json
+          page_number?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_chunks_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          content_hash: string | null
+          created_at: string
+          file_size: number
+          file_type: string
+          filename: string
+          id: string
+          processing_error: string | null
+          processing_status: Database["public"]["Enums"]["processing_status"]
+          storage_path: string
+          total_chunks: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content_hash?: string | null
+          created_at?: string
+          file_size: number
+          file_type: string
+          filename: string
+          id?: string
+          processing_error?: string | null
+          processing_status?: Database["public"]["Enums"]["processing_status"]
+          storage_path: string
+          total_chunks?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          content_hash?: string | null
+          created_at?: string
+          file_size?: number
+          file_type?: string
+          filename?: string
+          id?: string
+          processing_error?: string | null
+          processing_status?: Database["public"]["Enums"]["processing_status"]
+          storage_path?: string
+          total_chunks?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      evaluation_runs: {
+        Row: {
+          configuration: Json
+          created_at: string
+          id: string
+          metrics: Json
+          test_count: number
+          user_id: string
+        }
+        Insert: {
+          configuration?: Json
+          created_at?: string
+          id?: string
+          metrics?: Json
+          test_count?: number
+          user_id: string
+        }
+        Update: {
+          configuration?: Json
+          created_at?: string
+          id?: string
+          metrics?: Json
+          test_count?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          citations: Json
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          citations?: Json
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id?: string
+        }
+        Update: {
+          citations?: Json
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      match_chunks: {
+        Args: {
+          document_ids?: string[]
+          match_count?: number
+          min_similarity?: number
+          query_embedding: string
+        }
+        Returns: {
+          chunk_index: number
+          content: string
+          document_id: string
+          filename: string
+          id: string
+          metadata: Json
+          page_number: number
+          similarity: number
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      processing_status: "uploaded" | "processing" | "indexed" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +347,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      processing_status: ["uploaded", "processing", "indexed", "failed"],
+    },
   },
 } as const
