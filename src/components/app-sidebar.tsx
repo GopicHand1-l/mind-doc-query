@@ -1,4 +1,7 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import {
   LayoutDashboard,
   FileText,
@@ -71,11 +74,28 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="rounded-md border border-sidebar-border px-2.5 py-2 font-mono text-[10px] text-sidebar-foreground/70 group-data-[collapsible=icon]:hidden">
-          <span className="mr-1.5 inline-block size-1.5 rounded-full bg-warning" />
-          Backend not connected
-        </div>
+        <UserBox />
       </SidebarFooter>
     </Sidebar>
+  );
+}
+
+function UserBox() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState<string | null>(null);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? null));
+  }, []);
+  return (
+    <div className="flex items-center gap-2 rounded-md border border-sidebar-border px-2.5 py-2 group-data-[collapsible=icon]:hidden">
+      <span className="min-w-0 flex-1 truncate font-mono text-[11px] text-sidebar-foreground/80">{email ?? "…"}</span>
+      <button
+        aria-label="Sign out"
+        className="text-sidebar-foreground/70 hover:text-sidebar-accent-foreground"
+        onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); }}
+      >
+        <LogOut className="size-4" />
+      </button>
+    </div>
   );
 }
