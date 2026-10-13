@@ -1,12 +1,10 @@
 # DocuMind AI roadmap
-- [x] Phase 1: App shell, sidebar, Dashboard/Documents/Chat/Search/Evaluation/Settings views
-- [ ] Phase 2: Lovable Cloud + authentication (in progress)
-- [ ] Phase 3: Schema, migrations, RLS (pgvector)
-- [ ] Phase 4: Upload + private storage
-- [ ] Phase 5: Extraction, chunking, embeddings
-- [ ] Phase 6: Vector search
+- [x] Phase 1: App shell + views
+- [x] Phase 2: Lovable Cloud + email/Google auth
+- [x] Phase 3: Schema, pgvector (3072-d), RLS, private bucket
+- [x] Phase 4–5: Uploads, server-side PDF/TXT/DOCX extraction, chunking, embeddings, chunk storage (needs live end-to-end check with a signed-in user)
+- [ ] Phase 6: Vector search UI (match_chunks RPC exists)
 - [ ] Phase 7: Grounded generation + validated citations
-- [ ] Phase 8: Chat history + document management
+- [ ] Phase 8: Chat history + dashboard live stats
 - [ ] Phase 9: Tests + evaluation
 - [ ] Phase 10: Deployment + README
-- [ ] (user ask) Secure uploads + server-side extraction + chunk storage — phases 4–5
