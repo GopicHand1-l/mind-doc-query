@@ -6,7 +6,7 @@ import { PageHeader, EmptyState, Unavailable } from "@/components/page-shell";
 import { PHASES } from "@/lib/pipeline-config";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "Dashboard — DocuMind AI" },

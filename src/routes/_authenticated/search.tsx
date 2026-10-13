@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { PageHeader, EmptyState } from "@/components/page-shell";
 import { PIPELINE_CONFIG } from "@/lib/pipeline-config";
 
-export const Route = createFileRoute("/search")({
+export const Route = createFileRoute("/_authenticated/search")({
   head: () => ({
     meta: [
       { title: "Search Explorer — DocuMind AI" },
