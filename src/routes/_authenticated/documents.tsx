@@ -73,14 +73,14 @@ function Documents() {
 
   const upload = async (file: File) => {
     const v = validateUpload(file.name, file.size);
-    if (!v.ok) return toast.error(`${file.name}: ${v.error}`);
+    if (!v.ok) { toast.error(`${file.name}: ${v.error}`); return; }
     let id: string | null = null;
     try {
       const doc = await create({ data: { filename: file.name, size: file.size } });
       id = doc.id;
       setBusy((b) => ({ ...b, [doc.id]: "Uploading…" }));
       refresh();
-      const { error } = await supabase.storage.from("documents").upload(doc.storagePath, file, { contentType: MIME[v.type], upsert: false });
+      const { error } = await supabase.storage.from("documents").upload(doc.storagePath, file, { contentType: MIME[v.type] ?? "application/octet-stream", upsert: false });
       if (error) throw new Error(`Upload failed: ${error.message}`);
       await runIngest(doc.id, file.name);
     } catch (e) {
