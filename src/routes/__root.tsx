@@ -6,10 +6,12 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { supabase } from "@/integrations/supabase/client";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { AppSidebar } from "@/components/app-sidebar";
@@ -123,6 +125,27 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  const path = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => {
+    const { data } = supabase.auth.onAuthStateChange((event) => {
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      router.invalidate();
+      if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
+    });
+    return () => data.subscription.unsubscribe();
+  }, [router, queryClient]);
+
+  if (path === "/auth") {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <div className="absolute right-4 top-3"><ThemeToggle /></div>
+        <main className="px-4 py-10"><Outlet /></main>
+        <Toaster />
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
