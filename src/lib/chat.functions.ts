@@ -1,7 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { PIPELINE_CONFIG } from "@/lib/pipeline-config";
+import type { Database } from "@/integrations/supabase/types";
 
 export interface RetrievedChunk {
   id: string;
@@ -14,7 +16,7 @@ export interface RetrievedChunk {
 }
 
 async function retrieveChunks(
-  supabase: { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }> },
+  supabase: SupabaseClient<Database>,
   query: string,
   documentId?: string,
 ): Promise<RetrievedChunk[]> {
@@ -28,14 +30,14 @@ async function retrieveChunks(
     ...(documentId ? { document_ids: [documentId] } : {}),
   });
   if (error) throw new Error(`Search failed: ${error.message}`);
-  return ((data ?? []) as Record<string, unknown>[]).map((r) => ({
-    id: String(r.id),
-    documentId: String(r.document_id),
-    filename: String(r.filename),
-    chunkIndex: Number(r.chunk_index),
-    pageNumber: r.page_number == null ? null : Number(r.page_number),
-    content: String(r.content),
-    similarity: Number(r.similarity),
+  return (data ?? []).map((r) => ({
+    id: r.id,
+    documentId: r.document_id,
+    filename: r.filename,
+    chunkIndex: r.chunk_index,
+    pageNumber: r.page_number,
+    content: r.content,
+    similarity: r.similarity,
   }));
 }
 
